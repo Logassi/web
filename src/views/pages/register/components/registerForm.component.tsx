@@ -4,13 +4,24 @@ import IRegister from "../types";
 import axiosInstance from "@/libs/axios";
 import { useRouter } from "next/navigation";
 import RegisterSchema from "./schema";
+import axios from "axios";
 
 export default function RegisterForm() {
   const router = useRouter();
 
   const handleRegister = async (params: IRegister) => {
     try {
-      const response = await axiosInstance.post("/api/register", params);
+      // const response = await axiosInstance.post("/api/register", params);
+      const response = await axios.post(
+        "https://techtest.youapp.ai/api/register",
+        params
+      );
+
+      console.log(response.data);
+
+      console.log(response.status);
+
+      console.log(response.headers);
 
       router.push("/");
     } catch (error) {

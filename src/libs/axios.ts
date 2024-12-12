@@ -2,7 +2,8 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 
 const axiosInstance = axios.create({
-  baseURL: process.env.YOUAPP_TECHNICAL_TEST_API || "http://techtest.youapp.ai",
+  baseURL:
+    process.env.YOUAPP_TECHNICAL_TEST_API || "https://techtest.youapp.ai",
   withCredentials: true,
 });
 

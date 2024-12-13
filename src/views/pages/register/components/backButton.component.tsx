@@ -6,7 +6,7 @@ export default function BackButton() {
 
   return (
     <button
-      onClick={() => router.back()}
+      onClick={() => router.push("/")}
       className="flex items-center space-x-2 text-white text-sm font-medium hover:opacity-80 transition-opacity"
     >
       <svg

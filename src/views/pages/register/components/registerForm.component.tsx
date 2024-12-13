@@ -5,6 +5,7 @@ import axiosInstance from "@/libs/axios";
 import { useRouter } from "next/navigation";
 import RegisterSchema from "./schema";
 import axios from "axios";
+import LoginOption from "@/views/components/loginOption.component";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -30,8 +31,8 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-900 to-gray-800">
-      <div className="w-full max-w-md bg-gray-800 p-8 rounded-md shadow-lg">
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="w-full max-w-md p-8 rounded-md ">
         <h1 className="text-2xl font-bold text-white mb-6">Register</h1>
         <Formik
           initialValues={{
@@ -133,12 +134,7 @@ export default function RegisterForm() {
             </Form>
           )}
         </Formik>
-        <p className="mt-4 text-gray-400 text-center">
-          Have an account?{" "}
-          <a href="/login" className="text-blue-500 hover:underline">
-            Login here
-          </a>
-        </p>
+        <LoginOption />
       </div>
     </div>
   );

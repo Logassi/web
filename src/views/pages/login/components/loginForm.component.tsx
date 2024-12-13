@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import LoginSchema from "./schema";
 import axios from "axios";
 import { setCookie } from "cookies-next";
+import RegisterOption from "@/views/components/registerOption.component";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -59,8 +60,8 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-900 to-gray-800">
-      <div className="w-full max-w-md bg-gray-800 p-8 rounded-md shadow-lg">
+    <div className="min-h-screen flex items-center justify-center ">
+      <div className="w-full max-w-md p-8 rounded-md ">
         <h1 className="text-2xl font-bold text-white mb-6">Login</h1>
         <Formik
           initialValues={{
@@ -123,12 +124,7 @@ export default function LoginForm() {
             </Form>
           )}
         </Formik>
-        <p className="mt-4 text-gray-400 text-center">
-          Do not have an account?{" "}
-          <a href="/register" className="text-blue-500 hover:underline">
-            Register here
-          </a>
-        </p>
+        <RegisterOption />
       </div>
     </div>
   );

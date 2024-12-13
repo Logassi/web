@@ -31,8 +31,8 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-full max-w-md p-8 rounded-md ">
+    <div className="min-h-screen flex items-center justify-center bg-transparent">
+      <div className="w-full max-w-md bg-transparent p-8 rounded-md shadow-lg">
         <h1 className="text-2xl font-bold text-white mb-6">Register</h1>
         <Formik
           initialValues={{

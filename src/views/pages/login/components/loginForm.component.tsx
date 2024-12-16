@@ -5,10 +5,56 @@ import axiosInstance from "@/libs/axios";
 import { useRouter } from "next/navigation";
 import LoginSchema from "./schema";
 import axios from "axios";
-import { setCookie } from "cookies-next";
+import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import RegisterOption from "@/views/components/registerOption.component";
+import Swal from "sweetalert2";
+import ErrorHandler from "@/utils/errorHandler.utils";
+import useAuthStore, { IUserDataFromAPI } from "@/stores/user.stores";
+import { jwtDecode } from "jwt-decode";
+
+// const handleLogin = async (onAuthSuccess: (user: IUser | null) => void) => {
+//   try {
+//     console.log("morp");
+
+//     const access_token = (getCookie("access_token") as string) || "";
+
+//     const adaAksesToken = access_token
+//       ? access_token
+//       : "Lah ga ada akses token nya bang";
+//     console.log(adaAksesToken);
+
+//     if (access_token) {
+//       const user: IUser = jwtDecode(access_token);
+//       setCookie("access_token", access_token);
+//       onAuthSuccess(user);
+//       console.log(user);
+//     }
+
+//     return;
+//   } catch (error: any) {
+//     deleteCookie("access_token");
+//     console.log("Throwing Error");
+
+//     throw error;
+//   }
+// };
+
+// const settingUpCookie = async (param: any) => {
+//   try {
+//     console.log(param.data.message);
+//     console.log(param.data.access_token);
+
+//     if (!param.data.access_token) {
+//       throw new Error(param.data.message);
+//     }
+//     setCookie("access_token", param.data.access_token); // Session Cookie
+//   } catch (error: any) {
+//     throw error;
+//   }
+// };
 
 export default function LoginForm() {
+  const { onAuthSuccess } = useAuthStore();
   const router = useRouter();
 
   const isEmail = (value: string) => {
@@ -16,7 +62,7 @@ export default function LoginForm() {
     return emailRegex.test(value);
   };
 
-  const handleLogin = async (params: ILogin) => {
+  const login = async (params: ILogin) => {
     try {
       const isInputEmail = isEmail(params.identifier);
 
@@ -25,39 +71,115 @@ export default function LoginForm() {
         username: isInputEmail ? "" : params.identifier,
         password: params.password,
       };
+      const response = await axiosInstance.post("/api/login", identifiedParams);
 
-      console.log(isInputEmail);
-
-      console.log(identifiedParams.email);
-      console.log(identifiedParams.username);
-      console.log(identifiedParams.password);
-
-      // const response = await axiosInstance.post("/api/register", params);
-      const response = await axios.post(
-        "https://techtest.youapp.ai/api/login",
-        identifiedParams
-      );
-
-      console.log(response);
+      // await handleLogin(onAuthSuccess);
 
       const access_token = response.data.access_token;
 
-      // Store the access token in a cookie (with options like expiration time)
-      if (access_token) {
-        setCookie("access_token", access_token); // Session Cookie
-        //   setCookie('access_token', access_token, { maxAge: 60 * 60 * 24 * 7 }); // Cookie expires in 7 days
+      // if (response.data.message !== "User has been logged in ")
+      //   throw new Error();
+
+      console.log(response);
+
+      console.log(response.data.message);
+      console.log(response.data.access_token);
+
+      if (!response.data.access_token) {
+        throw new Error(response.data.message);
       }
+      setCookie("access_token", response.data.access_token); // Session Cookie
 
-      console.log("Access token stored in cookie:", access_token);
-      //   console.log(response.data.access_token);
-      //   console.log(response.status);
-      //   console.log(response.headers);
+      console.log("Access token set:", getCookie("access_token"));
 
-      router.push("/");
+      // settingUpCookie(response);
+
+      // if (access_token) {
+      //   setCookie("access_token", access_token); // Session Cookie
+      //   //   setCookie('access_token', access_token, { maxAge: 60 * 60 * 24 * 7 }); // Cookie expires in 7 days
+      // } else {
+      //   console.log("sampai di tidak bisa set cookie");
+
+      //   throw new Error();
+      // }
+
+      Swal.fire({
+        icon: "success",
+        title: response.data.message,
+        showConfirmButton: false,
+        timer: 3000,
+        // showConfirmButton: true,
+      }).then(() => router.push("/"));
     } catch (error) {
+      console.log("sampai di catch");
       console.log(error);
+
+      deleteCookie("access_token");
+      ErrorHandler(error);
     }
   };
+
+  // const isUserExist = async () => {
+  //   const { checkData } = await axios.get(
+  //     "https://techtest.youapp.ai/api/getProfile"
+  //   );
+
+  //   checkData.data.email
+
+  // }
+
+  // const handleLogin = async (params: ILogin) => {
+  //   try {
+  //     const isInputEmail = isEmail(params.identifier);
+
+  //     const identifiedParams = {
+  //       email: isInputEmail ? params.identifier : "",
+  //       username: isInputEmail ? "" : params.identifier,
+  //       password: params.password,
+  //     };
+
+  //     console.log(isInputEmail);
+
+  //     console.log(identifiedParams.email);
+  //     console.log(identifiedParams.username);
+  //     console.log(identifiedParams.password);
+
+  //     // const response = await axiosInstance.post("/api/register", params);
+  //     const response = await axios.post(
+  //       "https://techtest.youapp.ai/api/login",
+  //       identifiedParams
+  //     );
+
+  //     // const isUserExist = await axios.get(
+  //     //   "https://techtest.youapp.ai/api/getProfile"
+  //     // );
+
+  //     console.log(response);
+
+  //     const access_token = response.data.access_token;
+
+  //     // Store the access token in a cookie (with options like expiration time)
+  //     if (access_token) {
+  //       setCookie("access_token", access_token); // Session Cookie
+  //       //   setCookie('access_token', access_token, { maxAge: 60 * 60 * 24 * 7 }); // Cookie expires in 7 days
+  //     }
+
+  //     // console.log("Access token stored in cookie:", access_token);
+  //     console.log(response.data.access_token);
+  //     console.log(response.data.message);
+  //     console.log(response.headers);
+
+  //     Swal.fire({
+  //       icon: "success",
+  //       title: response.data.message,
+  //       showConfirmButton: false,
+  //       timer: 3000,
+  //     }).then(() => router.push("/"));
+  //     // router.push("/");
+  //   } catch (error) {
+  //     ErrorHandler(error);
+  //   }
+  // };
 
   return (
     <div className="min-h-screen flex items-center justify-center ">
@@ -69,7 +191,7 @@ export default function LoginForm() {
             password: "",
           }}
           validationSchema={LoginSchema}
-          onSubmit={handleLogin}
+          onSubmit={login}
         >
           {({ isSubmitting }) => (
             <Form>

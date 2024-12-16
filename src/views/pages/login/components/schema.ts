@@ -7,7 +7,7 @@ const LoginSchema = object({
   //     .min(2, "Name must be at least 2 characters long"),
   password: string()
     .required("Password is required")
-    .min(6, "Password must be at least 6 characters long"),
+    .min(8, "Password must be at least 8 characters long"),
 });
 
 export default LoginSchema;

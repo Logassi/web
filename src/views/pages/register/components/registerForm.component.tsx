@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import RegisterSchema from "./schema";
 import axios from "axios";
 import LoginOption from "@/views/components/loginOption.component";
+import ErrorHandler from "@/utils/errorHandler.utils";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -17,6 +18,9 @@ export default function RegisterForm() {
         "https://techtest.youapp.ai/api/register",
         params
       );
+      console.log("Test 1");
+
+      console.log(response);
 
       console.log(response.data);
 
@@ -26,7 +30,9 @@ export default function RegisterForm() {
 
       router.push("/");
     } catch (error) {
-      console.log(error);
+      // console.log("Test 2");
+      // console.log(error?.response?.message);
+      ErrorHandler(error);
     }
   };
 

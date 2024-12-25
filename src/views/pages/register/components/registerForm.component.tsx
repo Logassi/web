@@ -18,15 +18,16 @@ export default function RegisterForm() {
         "https://techtest.youapp.ai/api/register",
         params
       );
-      console.log("Test 1");
+      // console.log("Test 1");
 
-      console.log(response);
+      // console.log(response);
 
-      console.log(response.data);
+      // console.log(response.data);
 
-      console.log(response.status);
+      // console.log(response.status);
 
-      console.log(response.headers);
+      // console.log(response.headers);
+      console.log("You are Registered");
 
       router.push("/");
     } catch (error) {

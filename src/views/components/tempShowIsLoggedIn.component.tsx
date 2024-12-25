@@ -5,6 +5,7 @@ import RegisterOption from "./registerOption.component";
 import LoginOption from "./loginOption.component";
 import { deleteCookie, getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
+import UpdateAboutOption from "./updateAboutOption.component";
 
 export default function TempShowIsLoggedIn() {
   let user: boolean = false;
@@ -20,7 +21,7 @@ export default function TempShowIsLoggedIn() {
       {user ? (
         <div>
           <TempShowUsername />
-
+          <UpdateAboutOption />
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             onClick={() => {

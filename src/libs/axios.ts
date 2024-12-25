@@ -4,7 +4,7 @@ import { getCookie } from "cookies-next";
 const axiosInstance = axios.create({
   baseURL:
     process.env.YOUAPP_TECHNICAL_TEST_API || "https://techtest.youapp.ai",
-  withCredentials: true,
+  withCredentials: false,
 });
 
 axiosInstance.interceptors.request.use(

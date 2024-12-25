@@ -5,6 +5,8 @@ import axiosInstance from "@/libs/axios";
 import { useRouter } from "next/navigation";
 import RegisterSchema from "./schema";
 import axios from "axios";
+import LoginOption from "@/views/components/loginOption.component";
+import ErrorHandler from "@/utils/errorHandler.utils";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -16,16 +18,22 @@ export default function RegisterForm() {
         "https://techtest.youapp.ai/api/register",
         params
       );
+      // console.log("Test 1");
 
-      console.log(response.data);
+      // console.log(response);
 
-      console.log(response.status);
+      // console.log(response.data);
 
-      console.log(response.headers);
+      // console.log(response.status);
+
+      // console.log(response.headers);
+      console.log("You are Registered");
 
       router.push("/");
     } catch (error) {
-      console.log(error);
+      // console.log("Test 2");
+      // console.log(error?.response?.message);
+      ErrorHandler(error);
     }
   };
 
@@ -133,12 +141,7 @@ export default function RegisterForm() {
             </Form>
           )}
         </Formik>
-        <p className="mt-4 text-gray-400 text-center">
-          Have an account?{" "}
-          <a href="/login" className="text-blue-500 hover:underline">
-            Login here
-          </a>
-        </p>
+        <LoginOption />
       </div>
     </div>
   );

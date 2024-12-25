@@ -1,5 +1,10 @@
+import LoginView from "@/views/pages/login";
 import React from "react";
 
 export default function Login() {
-  return <div>Login</div>;
+  return (
+    <div>
+      <LoginView />
+    </div>
+  );
 }
